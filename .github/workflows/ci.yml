@@ -79,3 +79,34 @@ jobs:
 
       - name: Build containers
         run: docker compose build
+
+  deploy:
+    name: Deploy to Ubuntu Server
+    runs-on: self-hosted
+    needs:
+      - docker
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy latest portfolio
+        run: |
+          set -e
+
+          cd /home/sanjay/Cybersecurity_Portfolio
+
+          echo "Fetching latest code..."
+          git fetch origin main
+          git reset --hard origin/main
+
+          echo "Building and deploying containers..."
+          docker compose up -d --build
+
+          echo "Checking deployment..."
+          docker compose ps
+
+          echo "Testing backend..."
+          curl --fail http://localhost:5000/api/health
+
+          echo "Testing frontend..."
+          curl --fail --head http://localhost:8080
