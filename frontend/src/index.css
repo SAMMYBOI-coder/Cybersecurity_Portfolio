@@ -1725,3 +1725,619 @@ footer strong {
     display: none;
   }
 }
+
+
+/* === MOTION PASS V2 START === */
+
+/* -------------------------------------------------
+   HERO IDENTITY — EXTRA ROTATING HUD RINGS
+   ------------------------------------------------- */
+
+.orbit-a,
+.orbit-b {
+  overflow: visible;
+}
+
+/* Outer moving arc around orbit A */
+.orbit-a::before {
+  content: "";
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: color-mix(in srgb, var(--accent) 72%, transparent);
+  border-right-color: color-mix(in srgb, var(--accent-2) 28%, transparent);
+  opacity: 0.75;
+  pointer-events: none;
+  animation: hudRingForward 9s linear infinite;
+}
+
+/* Inner dashed scanner ring */
+.orbit-a::after {
+  content: "";
+  position: absolute;
+  inset: 17px;
+  border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--accent-2) 28%, transparent);
+  border-left-color: transparent;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: hudRingReverse 13s linear infinite;
+}
+
+/* Wider outer segmented ring */
+.orbit-b::before {
+  content: "";
+  position: absolute;
+  inset: -25px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-left-color: color-mix(in srgb, var(--accent-2) 55%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 22%, transparent);
+  opacity: 0.52;
+  pointer-events: none;
+  animation: hudRingReverse 19s linear infinite;
+}
+
+/* Smaller counter-rotating ring */
+.orbit-b::after {
+  content: "";
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--accent-2) 30%, transparent);
+  opacity: 0.72;
+  pointer-events: none;
+  animation: hudRingForward 7s linear infinite;
+}
+
+@keyframes hudRingForward {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hudRingReverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+
+/* -------------------------------------------------
+   SHARED CARD HOVER SYSTEM
+   Same sweep originally used on Featured Project
+   + consistent pop-out depth
+   ------------------------------------------------- */
+
+.project-featured,
+.project-mini,
+.cert-card,
+.hacktivity-box,
+.writing-tile,
+.contact-form {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.72, 0.22, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    background 0.28s ease;
+}
+
+/*
+  Use ::before for the shared sweep.
+  This lets us keep other pseudo-elements available
+  for section-specific effects.
+*/
+.project-featured::before,
+.project-mini::before,
+.cert-card::before,
+.hacktivity-box::before,
+.writing-tile::before,
+.contact-form::before {
+  content: "";
+  position: absolute;
+  top: -45%;
+  bottom: -45%;
+  left: -35%;
+  width: 32%;
+
+  z-index: 3;
+  pointer-events: none;
+
+  opacity: 0;
+
+  transform: rotate(12deg);
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent-2) 16%, transparent),
+    transparent
+  );
+}
+
+/* same pop-out behavior for every major card */
+.project-featured:hover,
+.project-mini:hover,
+.cert-card:hover,
+.hacktivity-box:hover,
+.writing-tile:hover,
+.contact-form:hover {
+  transform: translateY(-5px) scale(1.012);
+
+  border-color:
+    color-mix(in srgb, var(--accent) 38%, var(--line));
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.22),
+    0 0 32px color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+/* run the left → right light sweep */
+.project-featured:hover::before,
+.project-mini:hover::before,
+.cert-card:hover::before,
+.hacktivity-box:hover::before,
+.writing-tile:hover::before,
+.contact-form:hover::before {
+  animation: portfolioCardSweep 0.9s ease forwards;
+}
+
+@keyframes portfolioCardSweep {
+  0% {
+    left: -35%;
+    opacity: 0;
+  }
+
+  24% {
+    opacity: 0.78;
+  }
+
+  100% {
+    left: 115%;
+    opacity: 0;
+  }
+}
+
+/*
+  Featured project already had its own ::after sweep.
+  Disable that duplicate so it uses the exact same
+  shared effect as every other card.
+*/
+.project-featured::after {
+  display: none;
+}
+
+
+/* -------------------------------------------------
+   KEEP CONTENT ABOVE THE MOVING LIGHT
+   ------------------------------------------------- */
+
+.project-featured > *,
+.project-mini > *,
+.cert-card > *,
+.hacktivity-box > *,
+.writing-tile > *,
+.contact-form > * {
+  position: relative;
+  z-index: 4;
+}
+
+
+/* Motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .orbit-a::before,
+  .orbit-a::after,
+  .orbit-b::before,
+  .orbit-b::after {
+    animation: none !important;
+  }
+
+  .project-featured:hover,
+  .project-mini:hover,
+  .cert-card:hover,
+  .hacktivity-box:hover,
+  .writing-tile:hover,
+  .contact-form:hover {
+    transform: none;
+  }
+
+  .project-featured:hover::before,
+  .project-mini:hover::before,
+  .cert-card:hover::before,
+  .hacktivity-box:hover::before,
+  .writing-tile:hover::before,
+  .contact-form:hover::before {
+    animation: none;
+  }
+}
+
+/* === MOTION PASS V2 END === */
+
+
+/* === MOTION PASS V3 START === */
+
+/* -----------------------------------------------
+   SECTION REVEAL CHOREOGRAPHY
+   ----------------------------------------------- */
+
+.reveal .section-heading {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.2, 0.72, 0.22, 1);
+}
+
+.reveal.is-visible .section-heading {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ABOUT */
+
+.reveal .about-copy {
+  opacity: 0;
+  transform: translateX(-18px);
+  transition:
+    opacity 0.6s ease 0.08s,
+    transform 0.6s cubic-bezier(0.2, 0.72, 0.22, 1) 0.08s;
+}
+
+.reveal.is-visible .about-copy {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal .skill-signals {
+  opacity: 0;
+  transform: translateX(18px);
+  transition:
+    opacity 0.6s ease 0.14s,
+    transform 0.6s cubic-bezier(0.2, 0.72, 0.22, 1) 0.14s;
+}
+
+.reveal.is-visible .skill-signals {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* skill pills enter one after another */
+
+.reveal .skill-pill {
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+}
+
+.reveal.is-visible .skill-pill {
+  animation: skillPillIn 0.42s ease forwards;
+}
+
+.reveal.is-visible .skill-pill:nth-child(1) { animation-delay: 0.10s; }
+.reveal.is-visible .skill-pill:nth-child(2) { animation-delay: 0.14s; }
+.reveal.is-visible .skill-pill:nth-child(3) { animation-delay: 0.18s; }
+.reveal.is-visible .skill-pill:nth-child(4) { animation-delay: 0.22s; }
+.reveal.is-visible .skill-pill:nth-child(5) { animation-delay: 0.26s; }
+.reveal.is-visible .skill-pill:nth-child(6) { animation-delay: 0.30s; }
+.reveal.is-visible .skill-pill:nth-child(7) { animation-delay: 0.34s; }
+.reveal.is-visible .skill-pill:nth-child(8) { animation-delay: 0.38s; }
+.reveal.is-visible .skill-pill:nth-child(9) { animation-delay: 0.42s; }
+
+@keyframes skillPillIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   PROJECTS — ASYMMETRIC ENTRANCE
+   ----------------------------------------------- */
+
+.reveal .project-featured {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.reveal.is-visible .project-featured {
+  animation: projectFeaturedIn 0.64s cubic-bezier(0.2, 0.72, 0.22, 1) 0.08s forwards;
+}
+
+.reveal .project-mini {
+  opacity: 0;
+  transform: translateX(18px);
+}
+
+.reveal.is-visible .project-mini:nth-child(1) {
+  animation: projectMiniIn 0.56s ease 0.15s forwards;
+}
+
+.reveal.is-visible .project-mini:nth-child(2) {
+  animation: projectMiniIn 0.56s ease 0.24s forwards;
+}
+
+@keyframes projectFeaturedIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes projectMiniIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   EDUCATION
+   ----------------------------------------------- */
+
+.reveal .education-editorial {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal.is-visible .education-editorial {
+  animation: educationIn 0.62s ease 0.12s forwards;
+}
+
+@keyframes educationIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   CERTIFICATIONS
+   ----------------------------------------------- */
+
+.reveal .cert-card {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.reveal.is-visible .cert-card:nth-child(1) {
+  animation: certIn 0.5s ease 0.08s forwards;
+}
+
+.reveal.is-visible .cert-card:nth-child(2) {
+  animation: certIn 0.5s ease 0.16s forwards;
+}
+
+.reveal.is-visible .cert-card:nth-child(3) {
+  animation: certIn 0.5s ease 0.24s forwards;
+}
+
+@keyframes certIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   HACKTIVITY TIMELINE
+   ----------------------------------------------- */
+
+.reveal .hacktivity-box {
+  opacity: 0;
+  transform: translateX(18px);
+}
+
+.reveal.is-visible .hacktivity-box {
+  animation: hackBoxIn 0.58s ease 0.12s forwards;
+}
+
+@keyframes hackBoxIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* animate timeline line downward */
+
+.reveal .timeline-line {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.reveal.is-visible .timeline-line {
+  animation: timelineGrow 0.7s ease forwards;
+}
+
+.reveal.is-visible .activity-row:nth-child(1) .timeline-line {
+  animation-delay: 0.18s;
+}
+
+.reveal.is-visible .activity-row:nth-child(2) .timeline-line {
+  animation-delay: 0.30s;
+}
+
+.reveal.is-visible .activity-row:nth-child(3) .timeline-line {
+  animation-delay: 0.42s;
+}
+
+.reveal.is-visible .activity-row:nth-child(4) .timeline-line {
+  animation-delay: 0.54s;
+}
+
+@keyframes timelineGrow {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+
+/* timeline text stagger */
+
+.reveal .activity-content {
+  opacity: 0;
+  transform: translateX(8px);
+}
+
+.reveal.is-visible .activity-row:nth-child(1) .activity-content {
+  animation: timelineContentIn 0.42s ease 0.18s forwards;
+}
+
+.reveal.is-visible .activity-row:nth-child(2) .activity-content {
+  animation: timelineContentIn 0.42s ease 0.28s forwards;
+}
+
+.reveal.is-visible .activity-row:nth-child(3) .activity-content {
+  animation: timelineContentIn 0.42s ease 0.38s forwards;
+}
+
+.reveal.is-visible .activity-row:nth-child(4) .activity-content {
+  animation: timelineContentIn 0.42s ease 0.48s forwards;
+}
+
+.reveal.is-visible .activity-row:nth-child(5) .activity-content {
+  animation: timelineContentIn 0.42s ease 0.58s forwards;
+}
+
+@keyframes timelineContentIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   WRITING CARDS
+   ----------------------------------------------- */
+
+.reveal .writing-tile {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.reveal.is-visible .writing-tile:nth-child(1) {
+  animation: writingIn 0.5s ease 0.10s forwards;
+}
+
+.reveal.is-visible .writing-tile:nth-child(2) {
+  animation: writingIn 0.5s ease 0.18s forwards;
+}
+
+.reveal.is-visible .writing-tile:nth-child(3) {
+  animation: writingIn 0.5s ease 0.26s forwards;
+}
+
+@keyframes writingIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   CONTACT
+   ----------------------------------------------- */
+
+.reveal .contact-info {
+  opacity: 0;
+  transform: translateX(-14px);
+}
+
+.reveal.is-visible .contact-info {
+  animation: contactInfoIn 0.52s ease 0.08s forwards;
+}
+
+.reveal .contact-form {
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+.reveal.is-visible .contact-form {
+  animation: contactFormIn 0.58s ease 0.14s forwards;
+}
+
+@keyframes contactInfoIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes contactFormIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* -----------------------------------------------
+   SUBTLE SECTION LABEL SCAN
+   ----------------------------------------------- */
+
+.section-label,
+.eyebrow {
+  position: relative;
+  width: fit-content;
+}
+
+.section-label::after,
+.eyebrow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent-2),
+    transparent
+  );
+
+  transition: width 0.55s ease;
+}
+
+.reveal.is-visible .section-label::after,
+.reveal.is-visible .eyebrow::after {
+  width: 100%;
+}
+
+
+/* accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal *,
+  .reveal.is-visible * {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* === MOTION PASS V3 END === */
+
