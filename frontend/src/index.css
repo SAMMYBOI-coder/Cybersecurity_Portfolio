@@ -6,6 +6,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 18px;
 }
 
 :root {
@@ -29,7 +30,7 @@ html {
   --accent-soft: #b59cff;
   --green: #63d6aa;
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  --max: 930px;
+  --max: 1040px;
 }
 
 :root[data-theme="light"] {

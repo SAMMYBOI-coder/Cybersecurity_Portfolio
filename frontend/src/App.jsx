@@ -108,17 +108,17 @@ const profileLinks = [
   {
     label: "LinkedIn",
     short: "IN",
-    href: null,
+    href: "https://www.linkedin.com/in/sanjay-shrestha-643b93330",
   },
   {
     label: "Hack The Box",
     short: "HTB",
-    href: null,
+    href: "https://app.hackthebox.com/public/users/2184725",
   },
   {
     label: "TryHackMe",
     short: "THM",
-    href: null,
+    href: "https://tryhackme.com/p/SAM101",
   },
 ];
 
@@ -182,7 +182,7 @@ function IntroScreen({ onDone }) {
       <div className="intro-shell">
         <div className="intro-name">SANJAY SHRESTHA</div>
         <div className="intro-mark">
-          <img src="/avatar.png" alt="" />
+          <img src="/avatar.jpg" alt="" />
         </div>
         <div className="intro-line" />
       </div>
@@ -239,7 +239,7 @@ function Header({ theme, onThemeToggle }) {
     <header className="site-header">
       <nav className="nav-shell">
         <a href="#/home" className="brand" aria-label="Home">
-          <img src="/avatar.png" alt="" />
+          <img src="/avatar.jpg" alt="" />
           <span>SS</span>
         </a>
 
@@ -414,7 +414,7 @@ function Home({
           <div className="orbit-dot dot-b" />
 
           <div className="avatar-core">
-            <img src="/avatar.png" alt="Temporary Sanjay Shrestha identity mark" />
+            <img src="/avatar.jpg" alt="Sanjay Shrestha brand avatar" />
           </div>
 
           <div className="stage-label label-a">WEB//SEC</div>

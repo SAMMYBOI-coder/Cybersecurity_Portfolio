@@ -34,17 +34,45 @@ const projects = [
 const certifications = [
   {
     id: 1,
+    name: "CPTS",
+    issuer: "Hack The Box Academy",
+    description: "Hands-on penetration testing learning path and certification preparation.",
+    status: "In Progress",
+  },
+  {
+    id: 2,
+    name: "AI GRC Foundations",
+    issuer: "Certifyi AI",
+    description: "Foundation credential covering AI governance, risk and compliance.",
+    status: "Completed",
+  },
+  {
+    id: 3,
     name: "eJPT",
     issuer: "INE Security",
     description: "Junior penetration testing certification.",
     status: "Achieved",
   },
   {
-    id: 2,
-    name: "CPTS",
-    issuer: "Hack The Box Academy",
-    description: "Hands-on penetration testing learning path and certification preparation.",
-    status: "In Progress",
+    id: 4,
+    name: "CCEP",
+    issuer: "",
+    description: "Professional cybersecurity certification.",
+    status: "Achieved",
+  },
+  {
+    id: 5,
+    name: "CRTOM",
+    issuer: "",
+    description: "Practical cybersecurity certification.",
+    status: "Achieved",
+  },
+  {
+    id: 6,
+    name: "Advent of Cyber 2025",
+    issuer: "TryHackMe",
+    description: "Completed the Advent of Cyber 2025 learning event.",
+    status: "Completed",
   },
 ];
 
