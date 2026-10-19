@@ -25,8 +25,8 @@ const projects = [
     slug: "cybersecurity-portfolio-platform",
     category: "Development / DevOps",
     description:
-      "A full-stack portfolio platform built using React and Express, designed for future MongoDB integration, containerisation and CI/CD deployment.",
-    technologies: ["React", "Node.js", "Express", "REST API"],
+      "A full-stack React and Express portfolio containerised with Docker Compose, continuously validated with GitHub Actions and deployed to an Ubuntu server through Cloudflare Tunnel.",
+    technologies: ["React", "Node.js", "Docker", "GitHub Actions", "Cloudflare"],
     featured: true,
   },
 ];
@@ -37,6 +37,14 @@ const certifications = [
     name: "eJPT",
     issuer: "INE Security",
     description: "Junior penetration testing certification.",
+    status: "Achieved",
+  },
+  {
+    id: 2,
+    name: "CPTS",
+    issuer: "Hack The Box Academy",
+    description: "Hands-on penetration testing learning path and certification preparation.",
+    status: "In Progress",
   },
 ];
 
