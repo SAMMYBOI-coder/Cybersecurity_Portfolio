@@ -1628,7 +1628,23 @@ footer strong {
   }
 
   .nav-shell {
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+  }
+
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  .theme-toggle {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin: 0;
   }
 
   .nav-links {
@@ -1638,11 +1654,6 @@ footer strong {
     justify-content: space-between;
     padding: 0 0 0.65rem;
     overflow-x: auto;
-  }
-
-  .theme-toggle {
-    grid-column: 2;
-    grid-row: 1;
   }
 
   .hero {
