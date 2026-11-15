@@ -1,15 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 const projectRoutes = require("./routes/projectRoutes");
 const certificationRoutes = require("./routes/certificationRoutes");
 const achievementRoutes = require("./routes/achievementRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const vaultRoutes = require("./routes/vaultRoutes");
 
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 
 const PORT = process.env.PORT || 5000;
 
@@ -21,10 +24,12 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: allowedOrigins,
+    credentials: true,
   })
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.json({
@@ -43,6 +48,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/certifications", certificationRoutes);
 app.use("/api/achievements", achievementRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/vault", vaultRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
