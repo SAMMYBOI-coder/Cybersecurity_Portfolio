@@ -8,6 +8,16 @@ services:
     environment:
       PORT: 5000
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      NODE_ENV: ${NODE_ENV:-development}
+      JWT_SECRET: ${JWT_SECRET:-}
+      VAULT_ADMIN_USERNAME: ${VAULT_ADMIN_USERNAME:-}
+      VAULT_ADMIN_PASSWORD_HASH: ${VAULT_ADMIN_PASSWORD_HASH:-}
+      VAULT_VIEWER_USERNAME: ${VAULT_VIEWER_USERNAME:-}
+      VAULT_VIEWER_PASSWORD_HASH: ${VAULT_VIEWER_PASSWORD_HASH:-}
+      VAULT_DOCUMENT_FILENAME: ${VAULT_DOCUMENT_FILENAME:-private-document.pdf}
+      VAULT_DOCUMENT_TITLE: ${VAULT_DOCUMENT_TITLE:-Private Document}
+    volumes:
+      - ./backend/private-docs:/app/private-docs
     restart: unless-stopped
 
   frontend:

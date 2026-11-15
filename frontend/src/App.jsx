@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import Vault from "./Vault";
 import {
   getProjects,
   getCertifications,
@@ -810,7 +811,7 @@ function App() {
 
   const [showIntro, setShowIntro] = useState(() => {
     try {
-      return sessionStorage.getItem("portfolio-intro-seen") !== "1";
+      return window.location.hash !== "#/vault" && sessionStorage.getItem("portfolio-intro-seen") !== "1";
     } catch {
       return true;
     }
@@ -866,9 +867,9 @@ function App() {
   }, [route, loading]);
 
   useEffect(() => {
-    document.body.classList.toggle("intro-open", showIntro);
+    document.body.classList.toggle("intro-open", showIntro && route !== "vault");
     return () => document.body.classList.remove("intro-open");
-  }, [showIntro]);
+  }, [showIntro, route]);
 
   const closeIntro = () => {
     try {
@@ -892,6 +893,8 @@ function App() {
   };
 
   let content;
+
+  if (route === "vault") return <Vault />;
 
   switch (route) {
     case "projects":

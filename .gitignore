@@ -3,6 +3,8 @@ node_modules/
 
 # Environment variables
 .env
+backend/private-docs/
+backend/document-cache/
 .env.*
 !.env.example
 
