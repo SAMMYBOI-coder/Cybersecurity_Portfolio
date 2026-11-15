@@ -6,7 +6,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 const { execFile } = require("node:child_process");
 const { promisify } = require("node:util");
-const { rateLimit } = require("express-rate-limit");
+const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
 const multer = require("multer");
 
 const router = express.Router();
@@ -102,6 +102,20 @@ const loginLimit = rateLimit({
   limit: 5,
   standardHeaders: "draft-8",
   legacyHeaders: false,
+  skipSuccessfulRequests: true,
+  keyGenerator: (req) => {
+    const submittedUsername =
+      typeof req.body?.username === "string"
+        ? req.body.username.trim().toLowerCase()
+        : "";
+
+    const knownUsername = accounts().some(
+      (user) => user.username?.toLowerCase() === submittedUsername
+    );
+
+    const accountKey = knownUsername ? submittedUsername : "unknown";
+    return `${ipKeyGenerator(req.ip)}:${accountKey}`;
+  },
   message: { message: "Too many attempts. Try again later." },
 });
 

@@ -6,8 +6,10 @@ const api = `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/vaul
 async function vaultRequest(path, options = {}) {
   const response = await fetch(`${api}${path}`, { credentials: "include", cache: "no-store", ...options });
   if (!response.ok) {
-    if (response.status === 401) throw new Error("Your session has expired. Please sign in again.");
     const body = await response.json().catch(() => ({}));
+    if (response.status === 401 && path !== "/login") {
+      throw new Error("Your session has expired. Please sign in again.");
+    }
     throw new Error(body.message || "Unable to load the Vault.");
   }
   return response.json();
